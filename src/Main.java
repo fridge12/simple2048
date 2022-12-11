@@ -1,46 +1,33 @@
-import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
     static int size = 4;
     static int a[][] = new int[size][size];
-    static int prevVal = 0;
 
-    static final String UP = "u";
-    static final String DOWN = "d";
-    static final String LEFT = "l";
-    static final String RIGHT = "r";
+    static final String UP = "w";
+    static final String DOWN = "s";
+    static final String LEFT = "a";
+    static final String RIGHT = "d";
 
     public static void main(String args[]){
-//            //create();
-//            print();
-//            a[0][0]=2;
-//            a[0][2]= 2;
-//            a[0][3]=1;
-//
-//            a[1][0]=2;
-//            a[1][1] = 1;
-//            a[1][2]= 2;
-//            a[1][3]=1;
-//
-//            a[2][0]=2;
-//            a[2][2]= 2;
-//            a[2][3]=1;
-//            print();
-//            move(UP);
-//            print();
-//
-//            print();
-        Scanner in = new Scanner(System.in);
-        while (true){
-            System.out.println("enter 'u' for up, 'd' for down, 'r' for right, 'l' for left");
-            create();
-            print();
-            char choice =in.next().charAt(0);
-            move(choice+"");
-            removeZeros(choice+"");
 
+
+
+        Scanner in = new Scanner(System.in);
+        System.out.println("enter 'u' for up, 'd' for down, 'r' fsor right, 'l' for left");
+        create();
+        create();
+        print();
+        while (!isGameOver()){
+            char choice =in.next().charAt(0);
+            boolean moved = move(choice+"");
+            boolean removed = removeZeros(choice+"");
+            System.out.println("enter 'u' for up, 'd' for down, 'r' for right, 'l' for left");
+
+            if(moved || removed){create();}
+            print();
         }
+        System.out.println("GAME OVER");
 
     }
 
@@ -55,7 +42,8 @@ public class Main {
     }
 
 
-    public static void move(String choice){
+    public static boolean move(String choice){
+        boolean somethingMoved = false;
         for(int m =0;m<size;m++) {
             int j0=0;
             int i0 =0;
@@ -84,10 +72,11 @@ public class Main {
                     continue;
                 }
 
-                System.out.println("old val" + a[i0][j0]);
-                System.out.println("val" + a[i][j]);
-                System.out.println("ij" +i+ j);
+//                System.out.println("old val" + a[i0][j0]);
+//                System.out.println("val" + a[i][j]);
+//                System.out.println("ij" +i+ j);
                 if (a[i0][j0] == a[i][j]) {
+                    somethingMoved = true;
                     a[i0][j0] *= 2;
                     a[i][j] = 0;
                 }
@@ -96,10 +85,12 @@ public class Main {
                 //print();
             }
         }
-        
+        return somethingMoved;
     }
 
-    public static void removeZeros(String choice){
+    public static boolean removeZeros(String choice){
+        boolean somethingMoved = false;
+
         int jMove=0;
         int iMove = 0;
         switch(choice){
@@ -128,11 +119,12 @@ public class Main {
                 }
 
                 if(a[i][j]==0 && (jEmpty ==-1 || iEmpty ==-1)){
-                    System.out.println("ij"+i+j);
+                    //System.out.println("ij"+i+j);
                     jEmpty = j;
                     iEmpty = i;
                 }
                 else if(jEmpty != -1 && iEmpty != -1 && a[i][j]!=0){
+                    somethingMoved = true;
                     a[iEmpty][jEmpty] = a[i][j];
                     a[i][j]=0;
                     iEmpty += iMove ;
@@ -141,12 +133,28 @@ public class Main {
 
             }
         }
+        return somethingMoved;
+    }
+
+    public static boolean isGameOver(){
+        for(int i =0;i<size;i++){
+            for(int j = 0;j<size;j++){
+                if(a[i][j]==0){return false;}
+                if(i!=size-1 &&(a[i][j]==a[i+1][j])){return false;}
+                if(j!=size-1 &&(a[i][j]==a[i][j+1])){return false;}
+                if(i!=0 &&(a[i][j]==a[i-1][j])){return false;}
+                if(j!=0 &&(a[i][j]==a[i][j-1])){return false;}
+            }
+        }
+        return true;
     }
 
     public static void print(){
         for(int i = 0;i<size;i++){
             for(int j  = 0;j<size;j++){
-                System.out.print(a[i][j]+" ");
+                if(a[i][j]!=0)
+                System.out.print(a[i][j]+" \t\t");
+                else System.out.print(". \t\t");
             }
             System.out.println();
         }
