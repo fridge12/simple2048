@@ -37,8 +37,6 @@ public class Main {
 
     }
 
-
-
     public static void create(){                                        //creates a new number at a random empty position on the board
         boolean created = false;
         int ctr=0;
@@ -54,7 +52,7 @@ public class Main {
 
         // System.out.println("ctr:"+ctr);
         //this is just so that the previous loop doesn't run for too long, not likely but possible
-        if(!created){                                                               //if after size*size number of attempts a position is not found, just iterate through the array, till a position is found
+        if(!created){         //if after size*size number of attempts a position is not found, just iterate through the array, till a position is found
             outer:
             for(int i = 0;i<size;i++){
                 for(int j = 0;j<size;j++){
@@ -117,8 +115,6 @@ public class Main {
         return somethingAdded;
     }
 
-    //TODO: improve for loop logic in add and removeZeroes
-    //TODO: add more comments
 
     public static boolean removeZeros(String choice){
         boolean somethingMoved = false;
@@ -192,7 +188,7 @@ public class Main {
             for(int j  = 0;j<size;j++){
 
                 if(a[i][j]!=0)
-                System.out.print(a[i][j]);
+                    System.out.print(a[i][j]);
                 else System.out.print(".");
                 for(int k =0;k<spaceBetweenNumbers-(a[i][j]+"").length();k++){
                     System.out.print(" ");
@@ -201,4 +197,251 @@ public class Main {
             System.out.println();
         }
     }
+
+    //the function 4 different methods I was talking about
+
+     /*
+    public static boolean addLeft(){
+        System.out.println("add lefta");
+        boolean somethingAdded= false;
+        for(int i =0;i<size;i++) {
+            //stores the previous position where !0 was found
+            int j0=0;
+            int i0=i;
+            for (int j = 1; j < size; j++) {
+                //if the value is 0 skip the rest of the loop
+                if (a[i][j] == 0) {
+                    continue;
+                }
+                //only non zero values will reach this point
+                //if the current value is equal to the previous non zero number, add them
+                if (a[i0][j0] == a[i][j]) {
+                    somethingAdded = true;
+                    a[i0][j0] *= 2;
+                    a[i][j] = 0;
+                }
+                //if a non zero value is found, updating the previous non zero position to be the current position
+                j0 = j;
+                i0 = i;
+            }
+        }
+        return somethingAdded;
+    }
+
+    public static boolean addRight(){
+        System.out.println("add right");
+        boolean somethingAdded= false;
+        for(int i =0;i<size;i++) {
+            //stores the previous position where !0 was found
+            int j0=size-1;
+            int i0=i;
+            for (int j = size-2; j >=0; j--) {
+                //if the value is 0 skip the rest of the loop
+                if (a[i][j] == 0) {
+                    continue;
+                }
+                //only non zero values will reach this point
+                //if the current value is equal to the previous non zero number, add them
+                if (a[i0][j0] == a[i][j]) {
+                    somethingAdded = true;
+                    a[i0][j0] *= 2;
+                    a[i][j] = 0;
+                }
+                //if a non zero value is found, updating the previous non zero position to be the current position
+                j0 = j;
+                i0 = i;
+            }
+        }
+        return somethingAdded;
+    }
+
+    public static boolean addUp(){
+        System.out.println("add up");
+        boolean somethingAdded= false;
+        for(int i =0;i<size;i++) {
+            //stores the previous position where !0 was found
+            int j0=0;
+            int i0=i;
+            for (int j = 1; j < size; j++) {
+                //if the value is 0 skip the rest of the loop
+                if (a[j][i] == 0) {
+                    continue;
+                }
+                //only non zero values will reach this point
+                //if the current value is equal to the previous non zero number, add them
+                if (a[j0][i0] == a[j][i]) {
+                    somethingAdded = true;
+                    a[j0][i0] *= 2;
+                    a[j][i] = 0;
+                }
+                //if a non zero value is found, updating the previous non zero position to be the current position
+                j0 = j;
+                i0 = i;
+            }
+        }
+        return somethingAdded;
+    }
+
+    public static boolean addDown(){
+        System.out.println("add down");
+        boolean somethingAdded= false;
+        for(int i =0;i<size;i++) {
+            //stores the previous position where !0 was found
+            int j0=size-1;
+            int i0=i;
+            for (int j = size-2; j >=0; j--) {
+                //if the value is 0 skip the rest of the loop
+                if (a[j][i] == 0) {
+                    continue;
+                }
+                //only non zero values will reach this point
+                //if the current value is equal to the previous non zero number, add them
+                if (a[j0][i0] == a[j][i]) {
+                    somethingAdded = true;
+                    a[j0][i0] *= 2;
+                    a[j][i] = 0;
+                }
+                //if a non zero value is found, updating the previous non zero position to be the current position
+                j0 = j;
+                i0 = i;
+            }
+        }
+        return somethingAdded;
+    }
+
+    public static boolean add1(String choice){      //adds pieces, without removing the 0's between them, returns true when something was successfully added
+        boolean somethingAdded = false;
+        switch(choice){
+            case UP:somethingAdded = addUp();break;
+            case DOWN:somethingAdded =  addDown();break;
+            case LEFT:somethingAdded = addLeft();break;
+            case RIGHT:somethingAdded =  addRight();break;
+            default:
+                System.out.println("why must you do this to me");
+        }
+        return somethingAdded;
+    }
+
+
+
+    public static boolean removeZeroesLeft(){
+        boolean somethingMoved = false;
+        for(int i = 0;i<size;i++){
+            //stores the position of the previous empty (0) cell
+            int jEmpty = -1;
+            int iEmpty =-1;
+            for(int j =0;j<size ;j++){
+                //if the current position is empty (0), and no previous position has been empty, that means this is the first empty position set the previous empty position to be the current position
+                if(a[i][j]==0 && (jEmpty ==-1 || iEmpty ==-1)){
+                    jEmpty = j;
+                    iEmpty = i;
+                }
+                //if this cell is not empty, and there is a previous empty cell, then move the current value to the empty cell, and set current cell to 0
+                else if(jEmpty != -1 && iEmpty != -1 && a[i][j]!=0){
+                    somethingMoved = true;
+                    a[iEmpty][jEmpty] = a[i][j];
+                    a[i][j]=0;
+
+                    //moving the previous empty cell position to the position of the next empty cell.
+
+                    jEmpty++;
+                }
+
+            }
+        }
+        return somethingMoved;
+    }
+
+    public static boolean removeZeroesRight(){
+        boolean somethingMoved = false;
+        for(int i = 0;i<size;i++){
+            //stores the position of the previous empty (0) cell
+            int jEmpty = -1;
+            int iEmpty =-1;
+            for(int j =size-1;j>=0 ;j--){
+                //if the current position is empty (0), and no previous position has been empty, set the previous empty position to be the current position
+                if(a[i][j]==0 && (jEmpty ==-1 || iEmpty ==-1)){
+                    jEmpty = j;
+                    iEmpty = i;
+                }
+                //if this cell is not empty, and there is a previous empty cell, then move the current value to the empty cell, and set current cell to 0
+                else if(jEmpty != -1 && iEmpty != -1 && a[i][j]!=0){
+                    somethingMoved = true;
+                    a[iEmpty][jEmpty] = a[i][j];
+                    a[i][j]=0;
+                    //moving the previous empty cell position to the position of the next empty cell.
+                    jEmpty--;
+                }
+
+            }
+        }
+        return somethingMoved;
+    }
+
+    public static boolean removeZeroesUp(){
+        boolean somethingMoved = false;
+        for(int i = 0;i<size;i++){
+            //stores the position of the previous empty (0) cell
+            int jEmpty = -1;
+            int iEmpty =-1;
+            for(int j =0;j<size ;j++){
+                //if the current position is empty (0), and no previous position has been empty, set the previous empty position to be the current position
+                if(a[j][i]==0 && (jEmpty ==-1 || iEmpty ==-1)){
+                    jEmpty = j;
+                    iEmpty = i;
+                }
+                //if this cell is not empty, and there is a previous empty cell, then move the current value to the empty cell, and set current cell to 0
+                else if(jEmpty != -1 && iEmpty != -1 && a[j][i]!=0){
+                    somethingMoved = true;
+                    a[jEmpty][iEmpty] = a[j][i];
+                    a[j][i]=0;
+                    //moving the previous empty cell position to the position of the next empty cell.
+                    jEmpty++;
+                }
+
+            }
+        }
+        return somethingMoved;
+    }
+
+    public static boolean removeZeroesDown(){
+        boolean somethingMoved = false;
+        for(int i = 0;i<size;i++){
+            //stores the position of the previous empty (0) cell
+            int jEmpty = -1;
+            int iEmpty =-1;
+            for(int j =size-1;j>=0 ;j--){
+                //if the current position is empty (0), and no previous position has been empty, set the previous empty position to be the current position
+                if(a[j][i]==0 && (jEmpty ==-1 || iEmpty ==-1)){
+                    jEmpty = j;
+                    iEmpty = i;
+                }
+                //if this cell is not empty, and there is a previous empty cell, then move the current value to the empty cell, and set current cell to 0
+                else if(jEmpty != -1 && iEmpty != -1 && a[j][i]!=0){
+                    somethingMoved = true;
+                    a[jEmpty][iEmpty] = a[j][i];
+                    a[j][i]=0;
+                    //moving the previous empty cell position to the position of the next empty cell.
+                    jEmpty--;
+                }
+
+            }
+        }
+        return somethingMoved;
+    }
+
+
+    public static boolean removeZeros(String choice){
+        boolean somethingRemoved = false;
+        switch(choice){
+            case LEFT:somethingRemoved =removeZeroesLeft(); break;
+            case RIGHT:somethingRemoved =removeZeroesRight();break;
+            case DOWN:somethingRemoved = removeZeroesDown();break;
+            case UP:somethingRemoved = removeZeroesUp();break;
+            default:
+                System.out.println("why must you do this to me");
+        }
+        return somethingRemoved;
+    }*/
+
 }
